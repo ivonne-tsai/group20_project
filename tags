@@ -1,0 +1,60 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Button	Game.py	/^class Button:$/;"	c
+Enemy	Game.py	/^class Enemy:$/;"	c
+Tower	Game.py	/^class Tower:$/;"	c
+__init__	Game.py	/^    def __init__(self, x, y, w, h, text, text_size=24):$/;"	m	class:Button
+__init__	Game.py	/^    def __init__(self,path):$/;"	m	class:Enemy
+__init__	Game.py	/^    def __init__(self,x,y,w,h,text,text_size=24):$/;"	m	class:Tower
+add_enemy	Game.py	/^def add_enemy():$/;"	f
+add_enemy_event	Game.py	/^add_enemy_event = pygame.USEREVENT + 1$/;"	v
+black	Game.py	/^black = (0, 0, 0)$/;"	v
+brown	Game.py	/^brown = (165, 42, 42)$/;"	v
+button1	Game.py	/^button1=Button(140+10 ,0 ,button_width*2 ,button_height\/2 ,"1")$/;"	v
+button2	Game.py	/^button2=Button(140+10 ,button_height\/2 ,button_width*2 ,button_height\/2 ,"2")$/;"	v
+button_height	Game.py	/^button_height=(550-6*10)\/\/5$/;"	v
+button_i	Game.py	/^button_i=Tower(10 ,10 ,140-25 ,button_height ,"t1")$/;"	v
+button_j	Game.py	/^button_j=Tower(10 ,button_height +20 ,140-25 ,button_height ,"t2")$/;"	v
+button_k	Game.py	/^button_k=Tower(10 ,button_height *2 +30 ,140-25 ,button_height ,"t3")$/;"	v
+button_l	Game.py	/^button_l=Tower(10 ,button_height *3 +40 ,140-25 ,button_height ,"t4")$/;"	v
+button_width	Game.py	/^button_width=(140-3*10)\/\/2$/;"	v
+clock	Game.py	/^clock = pygame.time.Clock()$/;"	v
+continue_button	Game.py	/^continue_button=Button(105,200,210,100,"continue")$/;"	v
+cyan	Game.py	/^cyan = (0, 255, 255)$/;"	v
+delete_button	Game.py	/^delete_button=Button(10 ,550-button_height -10 ,button_width ,button_height ,"delete")$/;"	v
+draw	Game.py	/^    def draw(self):$/;"	m	class:Button
+draw	Game.py	/^    def draw(self):$/;"	m	class:Enemy
+draw	Game.py	/^    def draw(self):$/;"	m	class:Tower
+draw_end_screen	Game.py	/^def draw_end_screen():$/;"	f
+draw_first_screen	Game.py	/^def draw_first_screen():$/;"	f
+draw_map	Game.py	/^def draw_map():$/;"	f
+draw_pause_screen	Game.py	/^def draw_pause_screen():$/;"	f
+draw_pointer	Game.py	/^def draw_pointer():$/;"	f
+draw_second_screen	Game.py	/^def draw_second_screen():$/;"	f
+enemies	Game.py	/^enemies=[]$/;"	v
+generate_path	Game.py	/^def generate_path(map_data):$/;"	f
+gray	Game.py	/^gray = (128, 128, 128)$/;"	v
+green	Game.py	/^green = (0, 255, 0)$/;"	v
+initial_map	Game.py	/^initial_map =  [$/;"	v
+map1	Game.py	/^map1=initial_map$/;"	v
+map_size	Game.py	/^map_size=30$/;"	v
+map_x	Game.py	/^map_x=150$/;"	v
+map_y	Game.py	/^map_y=100$/;"	v
+move	Game.py	/^    def move(self):$/;"	m	class:Enemy
+path	Game.py	/^path=generate_path(map1)$/;"	v
+pause_button	Game.py	/^pause_button=Button(70 ,550-button_height -10 ,button_width ,button_height ,"pause")$/;"	v
+pink	Game.py	/^pink = (255, 192, 203) $/;"	v
+purple	Game.py	/^purple = (128, 0, 128)$/;"	v
+quit_button	Game.py	/^quit_button=Button(420,200,210,100,"quit")$/;"	v
+red	Game.py	/^red = (255, 0, 0)$/;"	v
+restart_button	Game.py	/^restart_button=Button(735,200,210,100,"restart")$/;"	v
+screen	Game.py	/^screen = pygame.display.set_mode((1050, 550))$/;"	v
+selected_button	Game.py	/^selected_button=None$/;"	v
+start	Game.py	/^start=False$/;"	v
+start_button	Game.py	/^start_button=Button(525-button_width ,275-button_height\/\/2 ,button_width*2 ,button_height ,"Start",36)$/;"	v
+white	Game.py	/^white = (255, 255, 255)$/;"	v
+yellow	Game.py	/^yellow = (255, 255, 0)$/;"	v

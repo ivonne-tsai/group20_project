@@ -83,6 +83,10 @@ button_j=Tower(10 ,button_height +20 ,140-25 ,button_height ,"t2")
 button_k=Tower(10 ,button_height *2 +30 ,140-25 ,button_height ,"t3")
 button_l=Tower(10 ,button_height *3 +40 ,140-25 ,button_height ,"t4")
 delete_button=Button(10 ,550-button_height -10 ,button_width ,button_height ,"delete")
+pause_button=Button(70 ,550-button_height -10 ,button_width ,button_height ,"pause")
+continue_button=Button(105,200,210,100,"continue")
+quit_button=Button(420,200,210,100,"quit")
+restart_button=Button(735,200,210,100,"restart")
 
 # 创建地图
 #map1 = [[0 for x in range(30)] for y in range(15)]
@@ -186,42 +190,68 @@ def draw_second_screen():
     button_k.draw()
     button_l.draw()
     delete_button.draw()
+    pause_button.draw()
     draw_map()
     draw_pointer()
     for enemy in enemies:
         enemy.draw()
     pygame.display.update()
-
-# 绘制第一个界面
-draw_first_screen()
+#繪製結束界面
+def draw_end_screen():
+    screen.fill((255,255,255))
+    pygame.display.update()
+#繪製暫停界面
+def draw_pause_screen():
+    screen.fill((0,0,0))
+    continue_button.draw()
+    quit_button.draw()
+    restart_button.draw()
+    pygame.display.update()
 
 add_enemy_event = pygame.USEREVENT + 1
 pygame.time.set_timer(add_enemy_event, 2500) # 每隔2.5秒觸發一次事件
 
 clock = pygame.time.Clock()
-
+start=False
 # 主循环
 while True:
     # 获取事件
+    pause=False
+    #未暫停
+    restart=False
+    #未重新開始
+    while start==False:
+        for event in pygame.event.get():
+            draw_first_screen()
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == MOUSEBUTTONDOWN:
+                x,y=event.pos
+                if start_button.rect.collidepoint(x,y):
+                    map1 = copy.deepcopy(initial_map)
+                    button_i.text="t1"
+                    button_j.text="t2"
+                    button_k.text="t3"
+                    button_l.text="t4"
+                    draw_second_screen()
+                    start=True
+                    break
+
     for event in pygame.event.get():
-        # 判断是否退出
+        #判斷是否退出界面
         if event.type == QUIT:
             pygame.quit()
             exit()
         # 判断鼠标点击事件
         elif event.type == MOUSEBUTTONDOWN:
+            # 判断鼠标是否在按钮范围内
             # 获取鼠标位置
             x,y=event.pos
-            # 判断鼠标是否在按钮范围内
-            if start_button.rect.collidepoint(x,y):
-                map1 = copy.deepcopy(initial_map)
-                button_i.text="t1"
-                button_j.text="t2"
-                button_k.text="t3"
-                button_l.text="t4"
-                draw_second_screen()
-            elif delete_button.rect.collidepoint(x,y):
+            if delete_button.rect.collidepoint(x,y):
                 selected_button = delete_button
+            elif pause_button.rect.collidepoint(x,y):
+                pause=True
             elif button1.rect.collidepoint(x,y):
                 button_i.text="t1"
                 button_j.text="t2"
@@ -276,7 +306,28 @@ while True:
                                 draw_second_screen()
         elif event.type == add_enemy_event:
             add_enemy()
+    while pause==True:
+        draw_pause_screen()
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == MOUSEBUTTONDOWN:
+                x,y=event.pos
+                if continue_button.rect.collidepoint(x,y):
+                    pause=False
+                    break
+                elif restart_button.rect.collidepoint(x,y):
+                    pause=False
+                    restart=True
+                    break
+                elif quit_button.rect.collidepoint(x,y):
+                    pygame.quit()
+                    exit()
 
+    if restart==True:
+        enemies=[]
+        continue
     clock.tick(60)
     for enemy in enemies:
         enemy.move()
@@ -286,4 +337,5 @@ while True:
     # 更新屏幕
     if selected_button is not None:
         draw_second_screen()
+ 
 
