@@ -109,10 +109,8 @@ class Enemy:
         self.speed=0.025
         self.health = 10
         self.max_health = 10
-
     def move(self):
         global player_health
-
         if self.current_pos<len(self.path)-1:
             self.current_pos+=self.speed
         else:
@@ -180,6 +178,8 @@ pause_button=Button(70 ,550-button_height -10 ,button_width ,button_height ,"pau
 continue_button=Button(105,200,210,100,"continue")
 quit_button=Button(420,200,210,100,"quit")
 restart_button=Button(735,200,210,100,"restart")
+quit_button2=Button(210,200,210,100,"quit")
+restart_button2=Button(630,200,210,100,"restart")
 
 # 创建地图
 #map1 = [[0 for x in range(30)] for y in range(15)]
@@ -319,10 +319,9 @@ def draw_pause_screen():
 
 #繪製結束界面
 def draw_end_screen():
-    #screen.fill((255,255,255))
     screen.fill((0,0,0))
-    quit_button.draw()
-    restart_button.draw()
+    quit_button2.draw()
+    restart_button2.draw()
     pygame.display.update()
 
 start=False
@@ -335,7 +334,6 @@ def main():
     global enemies
     global player_health
     global player_money
-    
 
     while True:
         # 获取事件
@@ -434,9 +432,12 @@ def main():
                         selected_button = None
                         pygame.time.set_timer(add_enemy_event, 1500)  # 重新啟用定時器事件
                 elif current_screen == 4:
-                    if quit_button.rect.collidepoint(x,y):
-                        current_screen = 1
-                    elif restart_button.rect.collidepoint(x,y):
+                    if quit_button2.rect.collidepoint(x,y):
+                        player_health=100
+                        enemies=[]
+                        pygame.time.set_timer(add_enemy_event, 1500)  
+                        current_screen=1
+                    elif restart_button2.rect.collidepoint(x,y):
                         current_screen = 2
                         map1 = copy.deepcopy(initial_map)
                         enemies = []
@@ -452,7 +453,7 @@ def main():
              
         # Check player health and update screen accordingly 
         if player_health <= 0:
-            current_screen = 3
+            current_screen = 4
 
         # 更新塔和子彈
         if current_screen == 2:
@@ -506,7 +507,7 @@ def main():
                 bullet.draw()
         elif current_screen == 3:
             draw_pause_screen()
-        elif current_screen == 4:
+        else:
             draw_end_screen()
 
         clock.tick(60)
