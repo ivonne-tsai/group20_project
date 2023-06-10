@@ -2,7 +2,7 @@ import pygame
 import copy
 import random
 import math
-
+import os
 pygame.init()
 
 # 设置颜色
@@ -15,7 +15,7 @@ brown = (165, 42, 42)
 red = (255, 0, 0)
 green = (0, 255, 0)
 yellow = (255, 255, 0)
-pink = (255, 192, 203) 
+pink = (255, 192, 203)
 
 # 定义变量
 # Set font
@@ -24,7 +24,7 @@ selected_button=None
 map_size=30
 map_x=150
 map_y=100
-button_width=55    
+button_width=55
 button_height=98
 enemies=[]  # create an instance of the Enemy class
 bullets = []
@@ -59,7 +59,6 @@ class Tower:
         self.text=text
         self.text_size=text_size
         self.shoot_timer = 0
-      
 
     def draw(self):
         pygame.draw.rect(screen ,white ,self.rect)
@@ -116,17 +115,18 @@ class Enemy:
         else:
             enemies.remove(self)
             row,col=self.path[int(self.current_pos)]
-            map1[row][col]=7
+            map_now[row][col]=7
 
             # Decrease player health
             player_health -= self.max_health
-            
+
     def draw(self):
         row,col=self.path[int(self.current_pos)]
+
         x=map_x+col*map_size
         y=map_y+row*map_size
         pygame.draw.rect(screen,self.color,(x,y,map_size,map_size))
-    
+
     def draw_health_bar(self):
         # 設置健康條的大小和位置
         bar_width = map_size
@@ -134,7 +134,7 @@ class Enemy:
         row,col=self.path[int(self.current_pos)]
         x=map_x+col*map_size
         y=map_y+row*map_size - 10
-        
+
         # 設置健康條的大小和位置
         fill_width = int(bar_width * (self.health / self.max_health))
 
@@ -166,7 +166,9 @@ class Bullet:
 
 
 # 创建按钮
-start_button=Button(470 ,226 ,110 ,98 ,"Start",36)
+game_1_button=Button(105,200,210,100,"game 1")
+game_2_button=Button(420,200,210,100,"game 2")
+game_3_button=Button(735,200,210,100,"game 3")
 button1=Button(140+10 ,0 ,button_width*2 ,button_height/2 ,"1")
 button2=Button(140+10 ,button_height/2 ,button_width*2 ,button_height/2 ,"2")
 button_i=Tower(10 ,10 ,140-25 ,button_height ,"t1")
@@ -183,7 +185,7 @@ restart_button2=Button(630,200,210,100,"restart")
 
 # 创建地图
 #map1 = [[0 for x in range(30)] for y in range(15)]
-initial_map =  [
+first_map =  [
            [9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #1
            [9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #2
            [9,9,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #3
@@ -200,18 +202,71 @@ initial_map =  [
            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,9], #14
            [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9]  #15
         ]
-map1=initial_map
+second_map =  [
+           [9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #1
+           [9,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #2
+           [9,9,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #3
+           [0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #4
+           [0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #5
+           [0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #6
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #7
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #8
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #9
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0], #10
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0], #11
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0], #12
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,9,9], #13
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,9], #14
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9]  #15
+        ]
+third_map =  [
+           [9,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #1
+           [9,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #2
+           [9,9,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #3
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #4
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #5
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], #6
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0], #7
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0], #8
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0], #9
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0], #10
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0], #11
+           [0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0], #12
+           [0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,9,9], #13
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,9], #14
+           [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,9]  #15
+        ]
 
 # get the road
 def generate_path(map_data):
-    path=[]
-    for row in range(len(map_data)):
-        for col in range(len(map_data[0])):
-            if map_data[row][col]==1:
-                path.append((row,col))
+    path=[(1,1)]
+    row_change=0
+    column_change=0
+    while path[-1] != (13,28):
+        row,column=path[-1]
+        if map_data[row][column+1]==1 and column_change!=-1:
+            column+=1
+            column_change=1
+            row_change=0
+        elif map_data[row][column-1]==1 and column_change!=1:
+            column-=1
+            column_change=1
+            row_change=0
+        elif map_data[row+1][column]==1 and row_change!=-1:
+            row+=1
+            row_change=1
+            column_change=0
+        elif map_data[row-1][column]==1 and row_change!=1:
+            row-=1
+            row_change=-1
+            column_change=0
+        path.append((row,column))
+    #for row in range(len(map_data)):
+       # for col in range(len(map_data[0])):
+        #    if map_data[row][col]==1:
+         #       path.append((row,col))
     return path
 # define the path for the enemy
-path=generate_path(map1)
 
 # 绘制地图
 def draw_map():
@@ -220,21 +275,21 @@ def draw_map():
         for col in range(30):
             x=map_x+col*map_size
             y=map_y+row*map_size
-            if map1[row][col]==0:
+            if map_now[row][col]==0:
                 color=cyan
-            elif map1[row][col]==1:
+            elif map_now[row][col]==1:
                 color=brown
-            elif map1[row][col]==3:
+            elif map_now[row][col]==3:
                 color=green
-            elif map1[row][col]==4:
+            elif map_now[row][col]==4:
                 color=black
-            elif map1[row][col]==5:
+            elif map_now[row][col]==5:
                 color=gray
-            elif map1[row][col]==6:
+            elif map_now[row][col]==6:
                 color=yellow
-            elif map1[row][col]==9:
+            elif map_now[row][col]==9:
                 color=red
-            elif map1[row][col]==7:
+            elif map_now[row][col]==7:
                 color=(255,192,203)
             pygame.draw.rect(screen,color,(x,y,map_size,map_size))
             pygame.draw.rect(screen,black,(x,y,map_size,map_size),1)
@@ -263,7 +318,9 @@ clock = pygame.time.Clock()
 # 繪製第一個界面
 def draw_first_screen():
     screen.fill((200,200,200))
-    start_button.draw()
+    game_1_button.draw()
+    game_2_button.draw()
+    game_3_button.draw()
     pygame.display.update()
 
 # 繪製第二個界面
@@ -298,7 +355,7 @@ def draw_hp_money():
     font = pygame.font.Font(None, font_size)
     hp_text = font.render(f"HP: {player_health}", True, black)
     money_text = font.render(f"Money: {player_money}", True, black)
-    
+
     # Calculate the position of the text
     hp_text_x = 840  + 15
     hp_text_y = 20
@@ -326,30 +383,48 @@ def draw_end_screen():
 
 start=False
 def main():
-    #global current_screen
     current_screen = 1
     global start             # 用 global 來 更新 外部同名變量的值
     global selected_button
-    global map1
+    global map_now
     global enemies
     global player_health
     global player_money
-
+    global map_now
+    global path
     while True:
         # 获取事件
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
+                os._exit(0)#這裡有改
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # 获取鼠标位置
                 x,y=event.pos
                 if current_screen == 1:
-                    if start_button.rect.collidepoint(x,y):
+                    player_money=500
+                    player_health=100
+                    enemies=[]
+                    pygame.time.set_timer(add_enemy_event, 1500)  # 重新啟用定時器事件
+
+                    if game_1_button.rect.collidepoint(x,y):
                         current_screen = 2
-                        map1 = copy.deepcopy(initial_map)    #刷新地圖
-                        enemies = []                         #    敵人
-                        selected_button = None               #    鼠標
+                        map_now=first_map
+                        path=generate_path(map_now)
+                        map_now= copy.deepcopy(first_map)    #刷新地圖
+                        selected_button = None  #    鼠標
+                    elif game_2_button.rect.collidepoint(x,y):
+                        current_screen = 2
+                        map_now=second_map
+                        path=generate_path(map_now)
+                        map_now = copy.deepcopy(second_map)    #刷新地圖
+                        selected_button = None  #    鼠標
+                    elif game_3_button.rect.collidepoint(x,y):
+                        current_screen = 2
+                        map_now=third_map
+                        path=generate_path(map_now)
+                        map_now = copy.deepcopy(third_map)    #刷新地圖
+                        selected_button = None  #    鼠標
+
                 elif current_screen == 2:
                     if pause_button.rect.collidepoint(x,y):
                         current_screen = 3
@@ -380,53 +455,54 @@ def main():
                     else:
                         col=(x -map_x) //map_size
                         row=(y -map_y) //map_size
-                        if 0 <=col <30 and 0 <=row <15 and map1[row][col] not in [1, 9]:
+                        if 0 <=col <30 and 0 <=row <15 and map_now[row][col] not in [1, 9]:
                             if selected_button == delete_button:
-                                map1[row][col] = 0
+                                map_now[row][col] = 0
                                 selected_button = None
                                 draw_second_screen()
                             elif selected_button is not None:
-                                if map1[row][col] == 0: # check if the position is land (represented by the value 0)
+                                if map_now[row][col] == 0: # check if the position is land (represented by the value 0)
                                     if selected_button == button_i and button_i.text == "t1":
                                         if player_money >= 50:
-                                            map1[row][col] = 3
+                                            map_now[row][col] = 3
                                             selected_button = None
                                             player_money-=50
                                             draw_second_screen()
                                     elif selected_button == button_j and button_j.text == "t2":
                                         if player_money >= 50:
-                                            map1[row][col] = 4
+                                            map_now[row][col] = 4
                                             selected_button = None
                                             player_money-=50
                                             draw_second_screen()
                                     elif selected_button == button_k and button_k.text == "t3":
                                         if player_money >= 50:
-                                            map1[row][col] = 5
+                                            map_now[row][col] = 5
                                             selected_button = None
                                             player_money-=50
                                             draw_second_screen()
                                     elif selected_button == button_l and button_l.text == "t4":
                                         if player_money >= 50:
-                                            map1[row][col] = 6
+                                            map_now[row][col] = 6
                                             selected_button = None
                                             player_money-=50
                                             draw_second_screen()
-                                    elif map1[row][col] == 5:
-                                            map1[row][col] = 0
+                                    elif map_now[row][col] == 5:
+                                            map_now[row][col] = 0
                                     else:
-                                        map1[row][col]=8
+                                        map_now[row][col]=8
                                         selected_button=None
                                         draw_second_screen()
                 #elif current_screen == 3 or current_screen == 4:
                 elif current_screen == 3:
                     if quit_button.rect.collidepoint(x,y):
                         current_screen = 1
+                        selected_button=None
                     elif continue_button.rect.collidepoint(x,y):
                         current_screen = 2
                         selected_button = None
                     elif restart_button.rect.collidepoint(x,y):
                         current_screen = 2
-                        map1 = copy.deepcopy(initial_map)
+                        map_now = copy.deepcopy(map_now)
                         enemies = []
                         player_health = 100 # reset player health to initial value 
                         selected_button = None
@@ -439,18 +515,18 @@ def main():
                         current_screen=1
                     elif restart_button2.rect.collidepoint(x,y):
                         current_screen = 2
-                        map1 = copy.deepcopy(initial_map)
+                        map_now = copy.deepcopy(map_now)
                         enemies = []
                         player_health = 100 # reset player health to initial value 
                         selected_button = None
                         pygame.time.set_timer(add_enemy_event, 1500)  # 重新啟用定時器事件
 
-                        
-                    
 
-            elif event.type == add_enemy_event:
+
+
+            elif current_screen==2 and event.type == add_enemy_event:
                 add_enemy()
-             
+
         # Check player health and update screen accordingly 
         if player_health <= 0:
             current_screen = 4
@@ -461,7 +537,7 @@ def main():
             for row in range(15):
                 for col in range(30):
                     # 檢查這個位置是否有塔
-                    if map1[row][col] in [3, 4, 5, 6]:
+                    if map_now[row][col] in [3, 4, 5, 6]:
                         x=map_x+col*map_size 
                         y=map_y+row*map_size
                         # 在這個位置創建一個臨時的 Tower 對象 
