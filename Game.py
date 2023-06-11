@@ -17,7 +17,7 @@ brown = (165, 42, 42)
 red = (255, 0, 0)
 green = (0, 255, 0)
 yellow = (255, 255, 0)
-pink = (255, 192, 203) 
+pink = (255, 192, 203)
 
 # 定义变量
 # Set font
@@ -26,7 +26,7 @@ selected_button=None
 map_size=30
 map_x=150
 map_y=100
-button_width=55    
+button_width=55
 button_height=98
 enemies=[]  # create an instance of the Enemy class
 bullets = []
@@ -105,7 +105,7 @@ class Tower:
                 bullet = Bullet(self.rect.centerx, self.rect.centery, direction)
             # 將新的項目符號添加到項目符號列表中
                 bullets.append(bullet)
-        
+
 class Enemy:
     def __init__(self,path):
         self.path=path
@@ -127,13 +127,13 @@ class Enemy:
 
             # Decrease player health
             player_health -= self.max_health
-            
+
     def draw(self):
         row,col=self.path[int(self.current_pos)]
         x=map_x+col*map_size
         y=map_y+row*map_size
         pygame.draw.rect(screen,self.color,(x,y,map_size,map_size))
-    
+
     def draw_health_bar(self):
         # 設置健康條的大小和位置
         bar_width = map_size
@@ -141,7 +141,7 @@ class Enemy:
         row,col=self.path[int(self.current_pos)]
         x=map_x+col*map_size
         y=map_y+row*map_size - 10
-        
+
         # 設置健康條的大小和位置
         fill_width = int(bar_width * (self.health / self.max_health))
         # 繪製血條背景
@@ -183,6 +183,8 @@ pause_button=Button(70 ,550-button_height -10 ,button_width ,button_height ,"pau
 continue_button=Button(105,200,210,100,"continue")
 quit_button=Button(420,200,210,100,"quit")
 restart_button=Button(735,200,210,100,"restart")
+lose_button=Button(105,200,210,100,"You lose!!!")
+win_button=Button(105,200,210,100,"You win!!!")
 
 # 创建地图
 first_map =  [
@@ -348,7 +350,7 @@ def draw_hp_money():
     font = pygame.font.Font(None, font_size)
     hp_text = font.render(f"HP: {player_health}", True, black)
     money_text = font.render(f"Money: {player_money}", True, black)
-    
+
     # Calculate the position of the text
     hp_text_x = 840  + 15
     hp_text_y = 20
@@ -367,9 +369,17 @@ def draw_pause_screen():
     restart_button.draw()
     pygame.display.update()
 
-#繪製結束界面
-def draw_end_screen():
+#繪製輸界面
+def draw_lose_screen():
     screen.fill((0,0,0))
+    lose_button.draw()
+    quit_button.draw()
+    restart_button.draw()
+    pygame.display.update()
+#繪製贏界面
+def draw_win_screen():
+    screen.fill((0,0,0))
+    win_button.draw()
     quit_button.draw()
     restart_button.draw()
     pygame.display.update()
@@ -399,7 +409,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                os.quit()
+                os._exit(0)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # 获取鼠标位置
                 x,y=event.pos
@@ -417,21 +427,21 @@ def main():
                         current_screen = 2
                         map_now=second_map
                         path=generate_path(map_now)
-                        map_now = copy.deepcopy(second_map) 
-                        rmap = copy.deepcopy(second_map) 
+                        map_now = copy.deepcopy(second_map)
+                        rmap = copy.deepcopy(second_map)
                         enemies = []
                         total_enemies =0
                         total_enemies = 0
-                        selected_button = None              
+                        selected_button = None
                     if game_3_button.rect.collidepoint(x,y):
                         current_screen = 2
                         map_now=third_map
                         path=generate_path(map_now)
-                        map_now = copy.deepcopy(third_map) 
+                        map_now = copy.deepcopy(third_map)
                         rmap = copy.deepcopy(third_map)
                         enemies = []
                         total_enemies =0
-                        selected_button = None             
+                        selected_button = None
                 elif current_screen == 2:
                     if pause_button.rect.collidepoint(x,y):
                         current_screen = 3
@@ -511,32 +521,35 @@ def main():
                         map_now = copy.deepcopy(rmap)
                         enemies = []
                         total_enemies =0
-                        player_health = 100 # reset player health to initial value 
+                        player_health = 100 # reset player health to initial value
                         player_money = 500
                         selected_button = None
                         pygame.time.set_timer(add_enemy_event, 1500)  # 重新啟用定時器事件
-                elif current_screen == 4:
+                elif current_screen == 4 or current_screen==5:
                     if quit_button.rect.collidepoint(x,y):
                         current_screen = 1
                     elif restart_button.rect.collidepoint(x,y):
                         current_screen = 2
                         map_now = copy.deepcopy(rmap)
-                        enemies = []
-                        total_enemies =0
-                        player_health = 100 # reset player health to initial value 
-                        player_money = 500
-                        selected_button = None
-                        pygame.time.set_timer(add_enemy_event, 1500)  # 重新啟用定時器事件
+                    enemies = []
+                    total_enemies =0
+                    player_health = 100 # reset player health to initial value
+                    player_money = 500
+                    selected_button = None
+                    pygame.time.set_timer(add_enemy_event, 1500)  # 重新啟用定時器事件
 
-                        
-                    
+
+
 
             elif current_screen==2 and event.type == add_enemy_event:
                 add_enemy()
-             
-        # Check player health and update screen accordingly 
+
+        # Check player health and update screen accordingly
         if player_health <= 0:
             current_screen = 4
+        elif player_health!=0 and enemies==[]:
+            if player_money!=500:
+                current_screen=5
 
         # 更新塔和子彈
         if current_screen == 2:
@@ -545,9 +558,9 @@ def main():
                 for col in range(30):
                     # 檢查這個位置是否有塔
                     if map_now[row][col] in [3, 4, 5, 6]:
-                        x=map_x+col*map_size 
+                        x=map_x+col*map_size
                         y=map_y+row*map_size
-                        # 在這個位置創建一個臨時的 Tower 對象 
+                        # 在這個位置創建一個臨時的 Tower 對象
                         tower=Tower(x,y,map_size,map_size,"")
                         tower.shoot()
 
@@ -591,8 +604,9 @@ def main():
         elif current_screen == 3:
             draw_pause_screen()
         elif current_screen == 4:
-            draw_end_screen()
-
+            draw_lose_screen()
+        elif current_screen==5:
+            draw_win_screen()
         clock.tick(60)
         pygame.display.update()
 
