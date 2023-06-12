@@ -89,6 +89,8 @@ class Tower:
                 # 更新最近的敵人及其距離
                 nearest_distance = distance
                 nearest_enemy = enemy
+            if nearest_distance>150:
+                nearest_enemy=None
 
         # 檢查是否找到最近的敵人
         if nearest_enemy is not None:
@@ -105,6 +107,8 @@ class Tower:
                 bullet = Bullet(self.rect.centerx, self.rect.centery, direction)
             # 將新的項目符號添加到項目符號列表中
                 bullets.append(bullet)
+                
+
 
 class Enemy:
     def __init__(self,path):
