@@ -1,1 +1,7 @@
-# group20_project
+![e1](https://github.com/ivonne-tsai/group20_project/assets/125877204/dd6335af-dd85-437f-909e-0733221efa38)
+![e2](https://github.com/ivonne-tsai/group20_project/assets/125877204/5357c8d4-ecfb-464d-af22-fb89fe618905)
+![e3](https://github.com/ivonne-tsai/group20_project/assets/125877204/4661034f-6fa1-4459-837b-a8463ab84396)
+![tw1](https://github.com/ivonne-tsai/group20_project/assets/125877204/a37f6b63-891b-4dc5-9919-ceed00cb1e3f)
+![tw2](https://github.com/ivonne-tsai/group20_project/assets/125877204/87e7af80-abdc-49bf-aac1-8754b1c3a30e)
+![tw3](https://github.com/ivonne-tsai/group20_project/assets/125877204/fdbefecb-5ceb-4a13-b0f7-f404d0456959)
+![tw4](https://github.com/ivonne-tsai/group20_project/assets/125877204/fd8e1a7a-f587-4790-85eb-417c1deeba63)
